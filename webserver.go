@@ -24,7 +24,7 @@ func main() {
 func MainServer(w http.ResponseWriter, r *http.Request) {
 	fmt.Print("Tried to access ", r.URL.Path, " ...")
 	var p string
-	r1 := regexp.MustCompile("(?:^/(?P<path>(?:uio))?(?P<subpath>/?.*/)?(?P<site>.+\\.(?P<filetype>html|css|js)?)?$)")
+	r1 := regexp.MustCompile("(?:^/(?P<path>(?:uio))?(?P<subpath>/?.*/)?(?P<site>.+\\.(?P<filetype>html|css|js)?)?$)?")
 	match := r1.FindStringSubmatch(r.URL.Path)
 	fullmatch, path, subpath, site, filetype := match[0], match[1], match[2], match[3], match[4]
 	orderedPath := strings.Split(subpath, "/")
