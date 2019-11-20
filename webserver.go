@@ -47,11 +47,14 @@ func GitServer(w http.ResponseWriter, r *http.Request) {
 	fmt.Print("Git tried to access ", r.URL.Path, " ...")
 	var p string
 	orderedPath := strings.Split(r.URL.Path[1:], "/") // [git, f, <repo>, ...<path>]
+	fmt.Println(orderedPath)
 
 	if orderedPath[1] == "f" {
 		p = "https://github.com/mazunki/" + orderedPath[2] + "/blob/master/" + strings.Join(orderedPath[3:],"/") + "?raw=True"
 	} else if len(orderedPath)>2 {
 		p = "https://github.com/mazunki/" + orderedPath[1] + "/blob/master/" + strings.Join(orderedPath[2:],"/")
+	} else if len(orderedPath) == 2  {
+		p = "https://github.com/mazunki/" + orderedPath[1]
 	} else {
 		p = "https://github.com/mazunki/"
 	}
