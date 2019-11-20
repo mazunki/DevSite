@@ -32,7 +32,7 @@ func MainServer(w http.ResponseWriter, r *http.Request) {
 	if fullmatch == "/" {
 		p = "./content/index.html"
 	} else if filetype == ".css" {
-		p = "./content/" + site
+		p = "./assets/" + site
 	} else if legalPage[subpath + site] {
 		p = "./content" + strings.Join(orderedPath[2:],"/")
 	} else {
