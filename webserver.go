@@ -18,6 +18,7 @@ func main() {
 	http.HandleFunc("/", MainServer)
 	http.HandleFunc("/git/", GitServer)
 	http.ListenAndServe(":8080", nil)
+	http.ListenAndServe(":80", nil)
 }
 
 func MainServer(w http.ResponseWriter, r *http.Request) {
