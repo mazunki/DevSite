@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"regexp"
 	"strings"
+	"log"
 )
 
 var legalPage = map[string]bool {
@@ -17,10 +18,10 @@ func main() {
 	fmt.Println("Listening on localhost:80")
 	http.HandleFunc("/", MainServer)
 	http.HandleFunc("/git/", GitServer)
-	http.ListenAndServe(":8080", nil)
-	http.ListenAndServe(":80", nil)
-	http.ListenAndServeTLS(":8080", "server.crt", "server.key", nil)
-	http.ListenAndServeTLS(":80", "server.crt", "server.key", nil)
+	log.Fatal(http.ListenAndServe(":8080", nil))
+	log.Fatal(http.ListenAndServe(":80", nil))
+	log.Fatal(http.ListenAndServeTLS(":8443", "cert.pem", "key.pem", nil))
+	log.Fatal(http.ListenAndServeTLS(":443", "cert.pem", "key.pem", nil))
 }
 
 func MainServer(w http.ResponseWriter, r *http.Request) {
