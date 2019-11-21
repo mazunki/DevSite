@@ -20,7 +20,7 @@ func main() {
 	http.HandleFunc("/git/", GitServer)
 //	log.Fatal(http.ListenAndServe(":8080", nil))
 //	log.Fatal(http.ListenAndServe(":80", nil))
-	log.Fatal(http.ListenAndServeTLS(":8443", "./certs/leaf.pem", "./certs/leaf.key", nil))
+	log.Fatal(http.ListenAndServeTLS(":8443", "./sslforfree/certificate.crt", "./sslforfree/private.key", nil))
 //	log.Fatal(http.ListenAndServeTLS(":443", "./certs/cert.pub", "priv.pem", nil))
 }
 
