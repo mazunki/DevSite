@@ -18,10 +18,10 @@ func main() {
 	fmt.Println("Listening on localhost:80")
 	http.HandleFunc("/", MainServer)
 	http.HandleFunc("/git/", GitServer)
-	log.Fatal(http.ListenAndServe(":8080", nil))
-	log.Fatal(http.ListenAndServe(":80", nil))
-	log.Fatal(http.ListenAndServeTLS(":8443", "cert.pem", "key.pem", nil))
-	log.Fatal(http.ListenAndServeTLS(":443", "cert.pem", "key.pem", nil))
+//	log.Fatal(http.ListenAndServe(":8080", nil))
+//	log.Fatal(http.ListenAndServe(":80", nil))
+	log.Fatal(http.ListenAndServeTLS(":8443", "./certs/leaf.pem", "./certs/leaf.key", nil))
+//	log.Fatal(http.ListenAndServeTLS(":443", "./certs/cert.pub", "priv.pem", nil))
 }
 
 func MainServer(w http.ResponseWriter, r *http.Request) {
@@ -41,8 +41,10 @@ func MainServer(w http.ResponseWriter, r *http.Request) {
 		p = "./content" + strings.Join(orderedPath[2:],"/")
 	} else {
 		p = "./noncontent/404.html"
+		p = "." + r.URL.Path
 		fmt.Println("Forbidden:", r.RemoteAddr)
 	}
+	fmt.Println(p)
 	http.ServeFile(w, r, p)
 }
 
