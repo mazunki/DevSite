@@ -6,6 +6,7 @@ import (
 	"regexp"
 	"strings"
 	"log"
+	"flag"
 )
 
 var legalPage = map[string]bool {
@@ -15,13 +16,22 @@ var legalPage = map[string]bool {
 }
 
 func main() {
-	fmt.Println("Listening on localhost:80")
+	portNr := flag.Int("http", 0, "http port")
+	portNrTLS := flag.Int("https", 8443, "https port")
+	flag.Parse()	
+
 	http.HandleFunc("/", MainServer)
 	http.HandleFunc("/git/", GitServer)
-//	log.Fatal(http.ListenAndServe(":8080", nil))
-//	log.Fatal(http.ListenAndServe(":80", nil))
-	log.Fatal(http.ListenAndServeTLS(":8443", "./sslforfree/certificate.crt", "./sslforfree/private.key", nil))
-//	log.Fatal(http.ListenAndServeTLS(":443", "./certs/cert.pub", "priv.pem", nil))
+
+	fmt.Println(*portNr, ",", *portNrTLS)
+
+	if *portNr != 0 {
+		fmt.Printf("Listening on localhost:%d\n", *portNr)
+		log.Fatal(http.ListenAndServe(fmt.Sprintf(":%d", *portNr), nil))
+	} else {
+		fmt.Println("Listening on secure localhost:%d\n", *portNrTLS)
+		log.Fatal(http.ListenAndServeTLS(fmt.Sprintf(":%d", *portNrTLS), "./sslforfree/certificate.crt", "./sslforfree/private.key", nil))
+	}
 }
 
 func MainServer(w http.ResponseWriter, r *http.Request) {
