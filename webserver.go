@@ -14,6 +14,7 @@ var legalPage = map[string]bool {
 	//"/stylesheet.css": true,
 	"/": true,
 	"/blog_entries/dashes.html": true,
+	"/blog_entries/dnd_yes_character.html": true,
 }
 
 func main() {
