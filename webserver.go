@@ -9,13 +9,6 @@ import (
 	"flag"
 )
 
-var legalPage = map[string]bool {
-	"/index.html": true,
-	//"/stylesheet.css": true,
-	"/": true,
-	"/blog_entries/dashes.html": true,
-	"/blog_entries/dnd_yes_character.html": true,
-}
 
 func main() {
 	portNr := flag.Int("http", 0, "http port")
@@ -43,19 +36,18 @@ func MainServer(w http.ResponseWriter, r *http.Request) {
 	match := r1.FindStringSubmatch(r.URL.Path)
 	fullmatch, path, subpath, site, filetype := match[0], match[1], match[2], match[3], match[4]
 	fmt.Printf("Path: (%s), Subpath: (%s), Site: (%s) with (%s)\n", path, subpath, site, filetype)
+	if site == "" {
+		site = "index.html"
+	}
 
 	if fullmatch == "/" {
 		p = "./content/index.html"
 	} else if filetype == "css" {
 		p = "./assets/" + site
-	} else if legalPage[fmt.Sprintf("/%s%s",subpath,site)] {
-		p = fmt.Sprintf("./content/%s%s", subpath, site)
 	} else {
-		p = "./noncontent/404.html"
-		p = "." + r.URL.Path
-		fmt.Println("Forbidden:", r.RemoteAddr)
+		p = fmt.Sprintf("./content/%s%s", subpath, site)
 	}
-	fmt.Println(p)
+	fmt.Println("Serving:", p)
 	http.ServeFile(w, r, p)
 }
 
