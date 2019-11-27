@@ -44,4 +44,9 @@ a {
 	background-color:#666;
 }
 .content {
-	background-color: #444;}
+	background-color: #444;
+}
+
+p {
+	font-size: 1rem;
+}
