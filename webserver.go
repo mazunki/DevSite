@@ -13,6 +13,7 @@ var legalPage = map[string]bool {
 	"/index.html": true,
 	//"/stylesheet.css": true,
 	"/": true,
+	"/blog_entries/dashes.html": true,
 }
 
 func main() {
@@ -40,15 +41,14 @@ func MainServer(w http.ResponseWriter, r *http.Request) {
 	r1 := regexp.MustCompile("(?:^/(?P<path>(?:uio))?(?P<subpath>/?.*/)?(?P<site>.+\\.(?P<filetype>html|css|js)?)?$)?")
 	match := r1.FindStringSubmatch(r.URL.Path)
 	fullmatch, path, subpath, site, filetype := match[0], match[1], match[2], match[3], match[4]
-	orderedPath := strings.Split(subpath, "/")
 	fmt.Printf("Path: (%s), Subpath: (%s), Site: (%s) with (%s)\n", path, subpath, site, filetype)
 
 	if fullmatch == "/" {
 		p = "./content/index.html"
 	} else if filetype == "css" {
 		p = "./assets/" + site
-	} else if legalPage[subpath + site] {
-		p = "./content" + strings.Join(orderedPath[2:],"/")
+	} else if legalPage[fmt.Sprintf("/%s%s",subpath,site)] {
+		p = fmt.Sprintf("./content/%s%s", subpath, site)
 	} else {
 		p = "./noncontent/404.html"
 		p = "." + r.URL.Path
